@@ -116,7 +116,7 @@ You must set the `providers.google.client-id` and `providers.google.client-secre
 
 Any provider that supports OpenID Connect 1.0 can be configured via the OIDC config options below.
 
-You must set the `providers.oidc.issuer-url`, `providers.oidc.client-id` and `providers.oidc.client-secret` config options.
+You must set the `providers.oidc.issuer-url`, `providers.oidc.client-id` and `providers.oidc.client-secret` config options. `providers.oidc.use-preferred-username` is optional.
 
 Please see the [Provider Setup](https://github.com/thomseddon/traefik-forward-auth/wiki/Provider-Setup) wiki page for examples.
 
@@ -176,6 +176,7 @@ OIDC Provider:
   --providers.oidc.issuer-url=                          Issuer URL [$PROVIDERS_OIDC_ISSUER_URL]
   --providers.oidc.client-id=                           Client ID [$PROVIDERS_OIDC_CLIENT_ID]
   --providers.oidc.client-secret=                       Client Secret [$PROVIDERS_OIDC_CLIENT_SECRET]
+  --providers.oidc.use-preferred-username               If available, use preferred_username attribute as username (otherwise email) [$PROVIDERS_OIDC_USE_PREFERRED_USERNAME]
   --providers.oidc.resource=                            Optional resource indicator [$PROVIDERS_OIDC_RESOURCE]
 
 Generic OAuth2 Provider:

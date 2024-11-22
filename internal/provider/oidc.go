@@ -10,9 +10,10 @@ import (
 
 // OIDC provider
 type OIDC struct {
-	IssuerURL    string `long:"issuer-url" env:"ISSUER_URL" description:"Issuer URL"`
-	ClientID     string `long:"client-id" env:"CLIENT_ID" description:"Client ID"`
-	ClientSecret string `long:"client-secret" env:"CLIENT_SECRET" description:"Client Secret" json:"-"`
+	IssuerURL            string `long:"issuer-url" env:"ISSUER_URL" description:"Issuer URL"`
+	ClientID             string `long:"client-id" env:"CLIENT_ID" description:"Client ID"`
+	ClientSecret         string `long:"client-secret" env:"CLIENT_SECRET" description:"Client Secret" json:"-"`
+	UsePreferredUsername bool   `long:"use-preferred-username" env:"USE_PREFERRED_USERNAME" description:"If available, use preferred_username attribute as username (otherwise email)"`
 
 	OAuthProvider
 
@@ -93,6 +94,10 @@ func (o *OIDC) GetUser(token string) (User, error) {
 	// Extract custom claims
 	if err := idToken.Claims(&user); err != nil {
 		return user, err
+	}
+
+	if o.UsePreferredUsername && user.PreferredUsername != "" {
+		user.Email = user.PreferredUsername
 	}
 
 	return user, nil

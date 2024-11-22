@@ -127,6 +127,30 @@ func TestOIDCGetUser(t *testing.T) {
 	assert.Equal("example@example.com", user.Email)
 }
 
+func TestOIDCGetUserAsPreferredUsername(t *testing.T) {
+	assert := assert.New(t)
+
+	provider, server, serverURL, key := setupOIDCTest(t, nil)
+	defer server.Close()
+
+	// Generate JWT
+	token := key.sign(t, []byte(`{
+		"iss": "`+serverURL.String()+`",
+		"exp":`+strconv.FormatInt(time.Now().Add(time.Hour).Unix(), 10)+`,
+		"aud": "idtest",
+		"sub": "1",
+		"preferred_username": "example",
+		"email": "example@example.com",
+		"email_verified": true
+	}`))
+
+	// Get user
+	provider.UsePreferredUsername = true
+	user, err := provider.GetUser(token)
+	assert.Nil(err)
+	assert.Equal("example", user.Email)
+}
+
 // Utils
 
 // setOIDCTest creates a key, OIDCServer and initilises an OIDC provider

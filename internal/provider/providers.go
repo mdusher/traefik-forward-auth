@@ -29,7 +29,8 @@ type token struct {
 
 // User is the authenticated user
 type User struct {
-	Email string `json:"email"`
+	PreferredUsername string `json:"preferred_username"`
+	Email             string `json:"email"`
 }
 
 // OAuthProvider is a provider using the oauth2 library
